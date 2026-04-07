@@ -81,10 +81,6 @@ def main(args):
         # Append the new dataset to the output dataset
         ds_output = ds_output.merge(ds_regrid)
 
-    # Duplicate the 'primary' data array into a 'secondary' data array.  Eventually
-    # this will contain different data from a future CLM landuse x pft update
-    ds_output['frac_secnd'] = ds_output.frac_primr.copy(deep=True)
-    
     # Create a mask variable from the primary forest NaN values
     ds_output['mask'] = xr.where(ds_output.frac_primr.isnull(),1,0)
     
@@ -96,6 +92,10 @@ def main(args):
         if (varname != 'frac_brgnd'):
             ds_output[varname] = ds_output[varname].fillna(0.0)
 
+    # Duplicate the 'primary' data array into a 'secondary' data array.  Eventually
+    # this will contain different data from a future CLM landuse x pft update
+    ds_output['frac_secnd'] = ds_output.frac_primr.copy(deep=True)
+    
     # ds_regrid = ds_regrid.rename({'lat':'lsmlat','lon':'lsmlon'})
 
     # Output dataset to netcdf file
