@@ -84,6 +84,17 @@ def main(args):
     # Duplicate the 'primary' data array into a 'secondary' data array.  Eventually
     # this will contain different data from a future CLM landuse x pft update
     ds_output['frac_secnd'] = ds_output.frac_primr.copy(deep=True)
+    
+    # Create a mask variable from the primary forest NaN values
+    ds_output['mask'] = xr.where(ds_output.frac_primr.isnull(),0,1)
+    
+    # Update the bareground fraction NaN values to be one
+    ds_output['frac_brgnd'] = ds_output.frac_brgnd.fillna(1.0)
+    
+    # Update the remaining fractions NaN values to be zero
+    for varname in ds_var_names:
+        if (varname != 'frac_brgnd'):
+            ds_output[varname] = ds_output[varname].fillna(0.0)
 
     # ds_regrid = ds_regrid.rename({'lat':'lsmlat','lon':'lsmlon'})
 
