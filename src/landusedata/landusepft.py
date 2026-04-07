@@ -86,7 +86,7 @@ def main(args):
     ds_output['frac_secnd'] = ds_output.frac_primr.copy(deep=True)
     
     # Create a mask variable from the primary forest NaN values
-    ds_output['mask'] = xr.where(ds_output.frac_primr.isnull(),0,1)
+    ds_output['mask'] = xr.where(ds_output.frac_primr.isnull(),1,0)
     
     # Update the bareground fraction NaN values to be one
     ds_output['frac_brgnd'] = ds_output.frac_brgnd.fillna(1.0)
