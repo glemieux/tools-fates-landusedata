@@ -99,8 +99,12 @@ def main(args):
     # Write the files
     # TO DO: add check to handle if the user enters the full path
     output_file = os.path.join(os.getcwd(),args.output)
+    
+    # Set the encoding for _FillValue to set all NaNs to zero fraction
+    encoding = {var: {'_FillValue': 0.0} for var in ds_output.data_vars}
+    
     print("generating output: {}".format(output_file))
-    ds_output.to_netcdf(output_file)
+    ds_output.to_netcdf(output_file, encoding=encoding)
 
 if __name__ == "__main__":
     main()
